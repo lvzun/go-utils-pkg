@@ -1,4 +1,4 @@
-module go-utils-pkg
+module github.com/lvzun/go-utils-pkg
 
 go 1.16
 
