@@ -2,10 +2,10 @@ package httpsqs
 
 import (
 	"encoding/json"
+	"github.com/lvzun/go-utils-pkg/httpUtils"
 	"github.com/sirupsen/logrus"
 	"net/url"
 	"strings"
-	"utilsPkg/httpUtils"
 )
 
 type QueueInfo struct {

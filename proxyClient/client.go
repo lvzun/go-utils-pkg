@@ -4,12 +4,12 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/go-resty/resty/v2"
+	"github.com/lvzun/go-utils-pkg/netUtils"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
-	"utilsPkg/netUtils"
 )
 
 type ProxyInfo struct {
@@ -143,7 +143,7 @@ func (client *ProxyClient) ProxyVerifyUri(id, uri string) bool {
 	}
 }
 
-//代理验证是否可用
+// 代理验证是否可用
 func CheckNetwork(ipAddress string, port int) bool {
 	_, err := netUtils.Ping(ipAddress)
 	if err != nil {
@@ -204,7 +204,7 @@ func ChangeIP() bool { //重试三次拨号
 	return false
 }
 
-//offValue代理强制下线次数
+// offValue代理强制下线次数
 func (client *ProxyClient) OfflineProxyByUrl(proxy string, offValue string) {
 	if len(ProxyAuth) > 0 {
 		proxy = strings.Replace(proxy, "http://"+ProxyAuth+"@", "http://", -1)
@@ -222,7 +222,7 @@ func (client *ProxyClient) OfflineProxyByUrl(proxy string, offValue string) {
 	}
 }
 
-//offValue代理强制下线次数
+// offValue代理强制下线次数
 func (client *ProxyClient) OfflineProxy(proxy ProxyInfo, offValue string) {
 	if len(ProxyAuth) > 0 {
 		proxy.Proxy = strings.Replace(proxy.Proxy, "http://"+ProxyAuth+"@", "http://", -1)

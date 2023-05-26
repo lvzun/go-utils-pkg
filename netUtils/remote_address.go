@@ -1,7 +1,7 @@
 package netUtils
 
 import (
-	"utilsPkg/validateUtils"
+	"github.com/lvzun/go-utils-pkg/validateUtils"
 )
 
 func GetRemoteAddress(headers map[string][]string, remoteIP string) string {

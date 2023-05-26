@@ -2,10 +2,10 @@ package logger
 
 import (
 	"fmt"
+	"github.com/lvzun/go-utils-pkg/netUtils"
 	"os"
 	"path"
 	"path/filepath"
-	"utilsPkg/netUtils"
 
 	"github.com/gemnasium/logrus-graylog-hook/v3"
 	"github.com/sirupsen/logrus"

@@ -6,9 +6,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/go-resty/resty/v2"
+	"github.com/lvzun/go-utils-pkg/cryptoUtils"
 	"net/http"
 	"time"
-	"utilsPkg/cryptoUtils"
 )
 
 var (

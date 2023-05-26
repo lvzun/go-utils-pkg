@@ -2,9 +2,9 @@ package httpUtils
 
 import (
 	"fmt"
+	"github.com/lvzun/go-utils-pkg/utils"
 	"net/http"
 	"strings"
-	"utilsPkg/utils"
 )
 
 type SessionCookieManager struct {
