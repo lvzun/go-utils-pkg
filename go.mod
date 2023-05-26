@@ -1,4 +1,4 @@
-module utilsPkg
+module go-utils-pkg
 
 go 1.16
 
