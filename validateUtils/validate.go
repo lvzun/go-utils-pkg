@@ -2,7 +2,7 @@ package validateUtils
 
 import (
 	"fmt"
-	"github.com/lvzun/github.com/lvzun/go-utils-pkg/cryptoUtils"
+	"github.com/lvzun/go-utils-pkg/cryptoUtils"
 	"github.com/sirupsen/logrus"
 
 	"regexp"
