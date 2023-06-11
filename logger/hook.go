@@ -9,7 +9,7 @@ type logrusFieldsHook struct {
 	mu sync.RWMutex
 }
 
-//TODO 后期可以做成配置项
+// TODO 后期可以做成配置项
 var logFieldsKeys = []string{"tag",
 	"tcOrderNo",
 	"duration",
@@ -32,7 +32,10 @@ var logFieldsKeys = []string{"tag",
 	"bbid",
 	"color",
 	"path",
-	"did"}
+	"did",
+	"mqWorder",
+	"mqUnread",
+}
 
 func (hook *logrusFieldsHook) Levels() []logrus.Level {
 	return logrus.AllLevels
