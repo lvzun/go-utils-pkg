@@ -49,7 +49,7 @@ func InitFileLog(filename string) {
 	logrus.SetLevel(logrus.TraceLevel)
 }
 
-func InitLogWithField(grayArr string, fields map[string]interface{}, console bool) {
+func InitLogWithFieldCustomHook(grayArr string, fields map[string]interface{}, console bool, customHook logrus.Hook) {
 	// graylog
 	logrus.SetReportCaller(false)
 	logrus.SetFormatter(&logrus.TextFormatter{
@@ -57,7 +57,9 @@ func InitLogWithField(grayArr string, fields map[string]interface{}, console boo
 	})
 	logrus.SetLevel(logrus.TraceLevel)
 
-	logrus.AddHook(&logrusFieldsHook{})
+	if customHook != nil {
+		logrus.AddHook(customHook)
+	}
 
 	if len(grayArr) > 2 {
 		hook := graylog.NewGraylogHook(grayArr, fields)
@@ -90,6 +92,9 @@ func InitLogWithField(grayArr string, fields map[string]interface{}, console boo
 			Compress:   false,
 		})
 	}
+}
+func InitLogWithField(grayArr string, fields map[string]interface{}, console bool) {
+	InitLogWithFieldCustomHook(grayArr, fields, console, nil)
 }
 
 // InitLog 初始化本地及服务端日志
