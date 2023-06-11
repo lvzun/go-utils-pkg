@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-type logrusFieldsHook struct {
+type LogrusFieldsHook struct {
 	mu sync.RWMutex
 }
 
@@ -37,11 +37,15 @@ var logFieldsKeys = []string{"tag",
 	"mqUnread",
 }
 
-func (hook *logrusFieldsHook) Levels() []logrus.Level {
+func AddFieldKeys(keys ...string) {
+	logFieldsKeys = append(logFieldsKeys, keys...)
+}
+
+func (hook *LogrusFieldsHook) Levels() []logrus.Level {
 	return logrus.AllLevels
 }
 
-func (hook *logrusFieldsHook) Fire(e *logrus.Entry) error {
+func (hook *LogrusFieldsHook) Fire(e *logrus.Entry) error {
 	hook.mu.RLock()
 	defer hook.mu.RUnlock()
 	if e.Context != nil {
