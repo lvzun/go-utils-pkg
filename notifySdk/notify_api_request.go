@@ -43,6 +43,14 @@ func NewInstance(notifyApiPath, key, id string) *notifyApi {
 	return n
 }
 
+func Send(sendReq *SendMessageRequestParams) error {
+	if GlobalInstance != nil {
+		return GlobalInstance.Send(sendReq)
+	} else {
+		return errors.New("notify api global instance is nil")
+	}
+}
+
 func (n *notifyApi) Send(sendRequest *SendMessageRequestParams) (err error) {
 
 	if sendRequest == nil {
@@ -62,6 +70,7 @@ func (n *notifyApi) Send(sendRequest *SendMessageRequestParams) (err error) {
 		return err
 	}
 	sign := cryptoUtils.ToMd5(n.appId + string(marshal) + cryptoUtils.ToMd5(n.appKey))
+	//logrus.Infof("signData:%s,sign=%s", n.appId+string(marshal)+cryptoUtils.ToMd5(n.appKey), sign)
 
 	reqUrl := fmt.Sprintf("%s?appId=%s&sign=%s", n.reqUrl, n.appId, sign)
 
