@@ -200,3 +200,16 @@ func IsJson(data string) bool {
 		return false
 	}
 }
+
+func GenerateRandomString(length int) string {
+	// 定义包含所有可能字符的字符串
+	characters := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+	// 生成随机字符串
+	result := make([]byte, length)
+	for i := 0; i < length; i++ {
+		result[i] = characters[rand.Intn(len(characters))]
+	}
+
+	return string(result)
+}
