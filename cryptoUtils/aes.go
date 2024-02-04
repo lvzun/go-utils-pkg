@@ -91,7 +91,7 @@ func PKCS5UnPadding(origData []byte) []byte {
 	return origData[:(length - unpadding)]
 }
 
-//使用PKCS7进行填充，IOS也是7
+// 使用PKCS7进行填充，IOS也是7
 func PKCS7Padding(ciphertext []byte, blockSize int) []byte {
 	padding := blockSize - len(ciphertext)%blockSize
 	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
@@ -148,7 +148,7 @@ func AesDecryptECB(data, key []byte) []byte {
 		block.Decrypt(decrypted[bs:be], data[bs:be])
 	}
 
-	return ZeroPadding(decrypted, size)
+	return ZeroUnPadding(decrypted)
 }
 
 func generateKey(key []byte) (genKey []byte) {
