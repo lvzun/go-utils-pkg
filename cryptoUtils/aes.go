@@ -127,6 +127,30 @@ func AesDecryptECBPK7(data, key []byte) []byte {
 	return PKCS7UnPadding(decrypted)
 }
 
+func AesEncryptECBPK5(data, key []byte) (encrypted []byte) {
+	block, _ := aes.NewCipher(key)
+	data = PKCS5Padding(data, block.BlockSize())
+	decrypted := make([]byte, len(data))
+	size := block.BlockSize()
+
+	for bs, be := 0, size; bs < len(data); bs, be = bs+size, be+size {
+		block.Encrypt(decrypted[bs:be], data[bs:be])
+	}
+	return decrypted
+}
+
+func AesDecryptECBPK5(data, key []byte) []byte {
+	block, _ := aes.NewCipher(key)
+	decrypted := make([]byte, len(data))
+	size := block.BlockSize()
+
+	for bs, be := 0, size; bs < len(data); bs, be = bs+size, be+size {
+		block.Decrypt(decrypted[bs:be], data[bs:be])
+	}
+
+	return PKCS5UnPadding(decrypted)
+}
+
 func AesEncryptECB(data, key []byte) (encrypted []byte) {
 	block, _ := aes.NewCipher(key)
 	data = ZeroPadding(data, block.BlockSize())
