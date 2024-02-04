@@ -124,7 +124,7 @@ func AesDecryptECBPK7(data, key []byte) []byte {
 		block.Decrypt(decrypted[bs:be], data[bs:be])
 	}
 
-	return PKCS7Padding(decrypted, size)
+	return PKCS7UnPadding(decrypted)
 }
 
 func AesEncryptECB(data, key []byte) (encrypted []byte) {
