@@ -41,3 +41,15 @@ func FileExists(path string) bool {
 	}
 	return true
 }
+
+func EnsureDir(dirName string) error {
+	// 使用Stat获取文件或目录的状态
+	_, err := os.Stat(dirName)
+
+	// 如果返回的错误是因为文件或目录不存在
+	if os.IsNotExist(err) {
+		// 使用MkdirAll创建目录，包括任何必需的父目录
+		return os.MkdirAll(dirName, 0755) // 0755是常用的目录权限
+	}
+	return err
+}

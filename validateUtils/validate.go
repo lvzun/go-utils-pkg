@@ -127,3 +127,11 @@ func CheckIPList(ip, configIp string) bool {
 	}
 	return false
 }
+
+func ValidateUrl(url string) bool {
+	if len(url) == 0 {
+		return false
+	}
+	reg := regexp.MustCompile(`^(https|http|ftp|rtsp|mms):\/\/.+?`)
+	return reg.Match([]byte(url))
+}
