@@ -62,6 +62,7 @@ type DBConfig struct {
 	ShowSql      bool
 	MaxIdleConns int
 	MaxOpenConns int
+	InitDbStruct bool
 }
 
 // URL mysql连接字符串
@@ -109,6 +110,7 @@ func (m *DBConfig) Load(prefix string) {
 	m.MaxIdleConns = viper.GetInt(fmt.Sprintf("%s.maxIdleConns", prefix))
 	m.MaxOpenConns = viper.GetInt(fmt.Sprintf("%s.maxOpenConns", prefix))
 	m.ShowSql = viper.GetBool(fmt.Sprintf("%s.showSql", prefix))
+	m.InitDbStruct = viper.GetBool(fmt.Sprintf("%s.initDbStruct", prefix))
 }
 
 // Redis redis配置
