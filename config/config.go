@@ -14,7 +14,7 @@ import (
 var Config config
 
 type config struct {
-	MySQL        *MySQL
+	DB           *DBConfig
 	Graylog      *Graylog
 	ScheduleCron string
 }
@@ -27,9 +27,9 @@ func InitConfigDefault() {
 
 func loadConfig() {
 
-	// MySQL
-	Config.MySQL = &MySQL{}
-	Config.MySQL.Load("")
+	// DBConfig
+	Config.DB = &DBConfig{}
+	Config.DB.Load("")
 
 	// Graylog
 	Config.Graylog = &Graylog{}
@@ -50,8 +50,9 @@ func (t *TCP) Load() {
 	t.Enable = viper.GetBool("tcp.enable")
 }
 
-// MySQL mysql配置
-type MySQL struct {
+type DBConfig struct {
+	DriverName   string
+	Enable       bool
 	Database     string
 	User         string
 	Password     string
@@ -64,22 +65,41 @@ type MySQL struct {
 }
 
 // URL mysql连接字符串
-func (m *MySQL) URL() string {
-	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=true&loc=Local",
-		m.User,
-		m.Password,
-		m.Host,
-		m.Port,
-		m.Database,
-		m.Charset,
-	)
+func (m *DBConfig) URL() string {
+
+	if m.DriverName == "mysql" {
+		return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=true&loc=Local",
+			m.User,
+			m.Password,
+			m.Host,
+			m.Port,
+			m.Database,
+			m.Charset,
+		)
+	} else if m.DriverName == "postgres" {
+		return fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+			m.Host,
+			m.Port,
+			m.User,
+			m.Password,
+			m.Database,
+		)
+	} else {
+		return ""
+	}
 }
 
 // Load 加载MySQL配置
-func (m *MySQL) Load(prefix string) {
+func (m *DBConfig) Load(prefix string) {
 	if prefix == "" {
-		prefix = "mysql"
+		if viper.Get("mysql") == nil {
+			prefix = "db"
+		} else {
+			prefix = "mysql"
+		}
 	}
+	m.Enable = viper.GetBool(fmt.Sprintf("%s.enable", prefix))
+	m.DriverName = viper.GetString(fmt.Sprintf("%s.driverName", prefix))
 	m.Database = viper.GetString(fmt.Sprintf("%s.database", prefix))
 	m.User = viper.GetString(fmt.Sprintf("%s.user", prefix))
 	m.Password = viper.GetString(fmt.Sprintf("%s.password", prefix))
