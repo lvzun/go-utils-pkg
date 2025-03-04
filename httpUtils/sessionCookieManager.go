@@ -68,15 +68,35 @@ func (scm *SessionCookieManager) String() string {
 }
 
 // 根据响应里的cookie 更新cookie 从而达到维持session的目的
-func (scm *SessionCookieManager) Update(res *http.Response) {
-	if res != nil && len(res.Header["Set-Cookie"]) > 0 {
+
+func (scm *SessionCookieManager) UpdateFromResponseWithCallback(cookies []*http.Cookie, callback func(key, value string)) {
+	for _, c := range cookies {
+		scm.Upsert(c.Name, c.Value)
+		if callback != nil {
+			callback(c.Name, c.Value)
+		}
+	}
+}
+
+// 根据响应里的cookie 更新cookie 从而达到维持session的目的
+func (scm *SessionCookieManager) UpdateWithCallback(res *http.Response, callback func(key, value string)) {
+	if len(res.Header["Set-Cookie"]) > 0 {
 		if len(res.Cookies()) == 0 {
 			return
 		} else {
 			for _, c := range res.Cookies() {
 				scm.Upsert(c.Name, c.Value)
+				if callback != nil {
+					callback(c.Name, c.Value)
+				}
 			}
 		}
 	}
-
+}
+func (scm *SessionCookieManager) Update(res *http.Response) {
+	scm.UpdateWithCallback(res, nil)
+}
+func (scm *SessionCookieManager) ClearCookies() {
+	scm.Key = make([]string, 0)
+	scm.Value = make([]string, 0)
 }
